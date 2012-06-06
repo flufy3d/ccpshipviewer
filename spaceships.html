@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+		<TITLE>Spaceships - Explore a Wide Range of Space Vessels - EVE Online</TITLE>
+		<META NAME="Generator" CONTENT="EditPlus">
+		<META NAME="Author" CONTENT="">
+		<META NAME="Keywords" CONTENT="">
+		<META NAME="Description" CONTENT="">
+	</HEAD>
+
+	<BODY>
+		<DIV style="width:640px; margin:auto; position:relative; font-size: 9pt; color: #777777;">
+			<DIV id="shipviewer-container">
+				<DIV id="shipviewer">
+					<A id="fullscreen-toggle" style="POSITION: absolute; FILTER: alpha(opacity=20); WIDTH: 36px; TOP: 20px; BACKGROUND: url(./assets/fullscreen-toggle.png) no-repeat left top; HEIGHT: 26px; CURSOR: pointer; LEFT: 20px; -moz-transition: opacity .2s ease-in-out; -webkit-transition: opacity .2s ease-in-out; -o-transition: opacity .2s ease-in-out; -ms-transition: opacity .2s ease-in-out; transition: opacity .2s ease-in-out; opacity: .2; Z-INDEX: 201" onclick="layoutElements();">
+					</A>
+				</DIV>
+			</DIV>
+			<DIV style="float:right;">
+				<SELECT id="shiplist" onchange="changeShip(this.value);">
+				</SELECT>
+			</DIV>
+		</DIV>
+		<SCRIPT type="text/javascript" src="ccp.shipviewer-0.987.js"></SCRIPT>
+		<SCRIPT type="text/javascript">
+			var slist = document.getElementById('shiplist');
+			var sbutton = document.getElementById('fullscreen-toggle');
+
+			var sviewer = new CCPShipViewer( {
+				parentElementId: 'shipviewer',
+				height: 480,
+				width: 640,
+				assetsPath: './assets/',
+				quality: 0,
+				boosterGain: 0.6,
+				showOverlay: false,
+				showFPS: false,
+				defaultShip: 'Absolution',
+				onLoaded: function() {
+					if (slist) {
+						for (var shipName in CCPShipResourceList) {
+							var opt = document.createElement('option');
+							opt.text = shipName;
+							slist.add(opt, null);
+						}
+					}
+				},
+				afterShipChanged: function(shipdata) {
+				}
+			} );
+
+			function changeShip(shipName) {
+				sviewer.selectShip(shipName);
+			}
+
+			var isCanvasMaximized = false;
+			function layoutElements() {
+				if (isCanvasMaximized) {
+					sviewer.RestoreCanvas();
+					isCanvasMaximized = false;
+					if (sbutton) {
+						sbutton.style.position = 'absolute';
+						sbutton.style.backgroundPositionY = '0%';
+					}
+				}
+				else {
+					sviewer.MaximizeCanvas();
+					isCanvasMaximized = true;
+					if (sbutton) {
+						sbutton.style.position = 'fixed';
+						sbutton.style.backgroundPositionY = '100%';
+					}
+				}
+			}
+		</SCRIPT>
+	</BODY>
+</HTML>
